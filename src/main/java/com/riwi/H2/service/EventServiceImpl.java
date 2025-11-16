@@ -1,8 +1,8 @@
-package com.riwi.H1.service;
+package com.riwi.H2.service;
 
-import com.riwi.H1.dto.EventDTO;
-import com.riwi.H1.model.Event;
-import com.riwi.H1.repository.EventRepository;
+import com.riwi.H2.dto.EventDTO;
+import com.riwi.H2.model.entity.Event;
+import com.riwi.H2.repository.EventRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

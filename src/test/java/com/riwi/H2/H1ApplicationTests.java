@@ -1,4 +1,4 @@
-package com.riwi.H1;
+package com.riwi.H2;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,6 @@
-package com.riwi.H1.repository;
+package com.riwi.H2.repository;
 
-import com.riwi.H1.model.Event;
-import com.riwi.H1.repository.EventRepository;
+import com.riwi.H2.model.entity.Event;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

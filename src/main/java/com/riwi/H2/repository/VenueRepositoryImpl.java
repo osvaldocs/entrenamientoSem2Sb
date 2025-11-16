@@ -1,7 +1,6 @@
-package com.riwi.H1.repository;
+package com.riwi.H2.repository;
 
-import com.riwi.H1.model.Venue;
-import com.riwi.H1.repository.VenueRepository;
+import com.riwi.H2.model.entity.Venue;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

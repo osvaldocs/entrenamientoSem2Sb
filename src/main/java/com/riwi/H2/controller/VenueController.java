@@ -1,8 +1,8 @@
-package com.riwi.H1.controller;
+package com.riwi.H2.controller;
 
-import com.riwi.H1.dto.VenueDTO;
-import com.riwi.H1.model.Venue;
-import com.riwi.H1.service.VenueService;
+import com.riwi.H2.dto.VenueDTO;
+import com.riwi.H2.model.entity.Venue;
+import com.riwi.H2.service.VenueService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,6 +1,6 @@
-package com.riwi.H1.repository;
+package com.riwi.H2.repository;
 
-import com.riwi.H1.model.Venue;
+import com.riwi.H2.model.entity.Venue;
 import java.util.List;
 
 public interface VenueRepository {

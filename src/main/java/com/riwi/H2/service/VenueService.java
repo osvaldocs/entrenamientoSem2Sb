@@ -1,7 +1,7 @@
-package com.riwi.H1.service;
+package com.riwi.H2.service;
 
-import com.riwi.H1.dto.VenueDTO;
-import com.riwi.H1.model.Venue;
+import com.riwi.H2.dto.VenueDTO;
+import com.riwi.H2.model.entity.Venue;
 import java.util.List;
 
 public interface VenueService {

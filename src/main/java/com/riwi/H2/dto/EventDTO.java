@@ -1,4 +1,4 @@
-package com.riwi.H1.dto;
+package com.riwi.H2.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

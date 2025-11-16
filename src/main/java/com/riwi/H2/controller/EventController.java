@@ -1,8 +1,8 @@
-package com.riwi.H1.controller;
+package com.riwi.H2.controller;
 
-import com.riwi.H1.dto.EventDTO;
-import com.riwi.H1.model.Event;
-import com.riwi.H1.service.EventService;
+import com.riwi.H2.dto.EventDTO;
+import com.riwi.H2.model.entity.Event;
+import com.riwi.H2.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
