@@ -1,7 +1,7 @@
 package com.riwi.H2.controller;
 
 import com.riwi.H2.dto.VenueDTO;
-import com.riwi.H2.model.entity.Venue;
+import com.riwi.H2.model.entity.VenueEntity;
 import com.riwi.H2.service.VenueService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,11 +34,11 @@ public class VenueController {
     @ApiResponse(
             responseCode = "200",
             description = "Lista obtenida correctamente",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Venue.class))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = VenueEntity.class))
     )
     @GetMapping
-    public ResponseEntity<List<Venue>> getAllVenues() {
-        List<Venue> venues = venueService.getAll();
+    public ResponseEntity<List<VenueEntity>> getAllVenues() {
+        List<VenueEntity> venues = venueService.getAll();
         return ResponseEntity.ok(venues);
     }
 
@@ -51,12 +51,12 @@ public class VenueController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Venue encontrado",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Venue.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VenueEntity.class))),
             @ApiResponse(responseCode = "404", description = "Venue no encontrado")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Venue> getVenueById(@PathVariable Long id) {
-        Venue venue = venueService.getById(id);
+    public ResponseEntity<VenueEntity> getVenueById(@PathVariable Long id) {
+        VenueEntity venue = venueService.getById(id);
         if (venue == null) {
             return ResponseEntity.notFound().build();
         }
@@ -72,12 +72,12 @@ public class VenueController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Venue creado correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Venue.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VenueEntity.class))),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
     @PostMapping
-    public ResponseEntity<Venue> createVenue(@RequestBody VenueDTO venueDTO) {
-        Venue createdVenue = venueService.create(venueDTO);
+    public ResponseEntity<VenueEntity> createVenue(@RequestBody VenueDTO venueDTO) {
+        VenueEntity createdVenue = venueService.create(venueDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdVenue);
     }
 
@@ -90,12 +90,12 @@ public class VenueController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Venue actualizado correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Venue.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = VenueEntity.class))),
             @ApiResponse(responseCode = "404", description = "Venue no encontrado")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Venue> updateVenue(@PathVariable Long id, @RequestBody VenueDTO venueDTO) {
-        Venue updatedVenue = venueService.update(id, venueDTO);
+    public ResponseEntity<VenueEntity> updateVenue(@PathVariable Long id, @RequestBody VenueDTO venueDTO) {
+        VenueEntity updatedVenue = venueService.update(id, venueDTO);
         if (updatedVenue == null) {
             return ResponseEntity.notFound().build();
         }
@@ -115,7 +115,7 @@ public class VenueController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVenue(@PathVariable Long id) {
-        Venue existing = venueService.getById(id);
+        VenueEntity existing = venueService.getById(id);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }

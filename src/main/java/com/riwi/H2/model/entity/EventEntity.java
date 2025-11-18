@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "events")
-public class Event {
+public class EventEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,5 +30,5 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "venue_id", nullable = false)
-    private Venue venue;
+    private VenueEntity venue;
 }

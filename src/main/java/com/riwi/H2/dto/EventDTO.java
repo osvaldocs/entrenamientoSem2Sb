@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EventDTO {
     private String name;
-    private String date;
-    private String venue;
+    private String date;      // String -> LocalDate dentro del Service
+    private Long venueId;     // String -> Long para buscar el venue
 }

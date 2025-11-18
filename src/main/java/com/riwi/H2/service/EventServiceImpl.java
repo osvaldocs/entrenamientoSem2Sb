@@ -1,74 +1,100 @@
 package com.riwi.H2.service;
 
 import com.riwi.H2.dto.EventDTO;
-import com.riwi.H2.model.entity.Event;
+import com.riwi.H2.model.entity.EventEntity;
+import com.riwi.H2.model.entity.VenueEntity;
 import com.riwi.H2.repository.EventRepository;
+import com.riwi.H2.repository.VenueRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
+    private final VenueRepository venueRepository;
 
-    public EventServiceImpl(EventRepository eventRepository) {
+    public EventServiceImpl(EventRepository eventRepository, VenueRepository venueRepository) {
         this.eventRepository = eventRepository;
+        this.venueRepository = venueRepository;
     }
 
     @Override
-    public List<Event> getAll() {
+    public List<EventEntity> getAll() {
         return eventRepository.findAll();
     }
 
     @Override
-    public Event getById(Long id) {
-        Event event = eventRepository.findById(id);
-        if (event == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado");
-        }
-        return event;
+    public EventEntity getById(Long id) {
+        return eventRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
     }
 
     @Override
-    public Event create(EventDTO eventDTO) {
+    public EventEntity create(EventDTO eventDTO) {
+
         if (eventDTO.getName() == null || eventDTO.getName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre del evento es obligatorio");
         }
         if (eventDTO.getDate() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La fecha del evento es obligatoria");
         }
-        if (eventDTO.getVenue() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El venue del evento es obligatorio");
+        if (eventDTO.getVenueId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El venueId es obligatorio");
         }
 
-        Event event = new Event(null, eventDTO.getName(), eventDTO.getDate(), eventDTO.getVenue());
+        // Convertir String -> LocalDate
+        LocalDate date;
+        try {
+            date = LocalDate.parse(eventDTO.getDate());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Formato de fecha inválido. Use YYYY-MM-DD");
+        }
+
+        // Buscar el venue
+        VenueEntity venue = venueRepository.findById(eventDTO.getVenueId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "El venue no existe"));
+
+        EventEntity event = new EventEntity(null, eventDTO.getName(), date, venue);
         return eventRepository.save(event);
     }
 
     @Override
-    public Event update(Long id, EventDTO eventDTO) {
-        Event existing = eventRepository.findById(id);
-        if (existing == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado");
-        }
+    public EventEntity update(Long id, EventDTO eventDTO) {
+
+        eventRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
 
         if (eventDTO.getName() == null || eventDTO.getName().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre del evento es obligatorio");
         }
 
-        Event updated = new Event(id, eventDTO.getName(), eventDTO.getDate(), eventDTO.getVenue());
-        return eventRepository.update(id, updated);
+        // Convertir String → LocalDate
+        LocalDate date;
+        try {
+            date = LocalDate.parse(eventDTO.getDate());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Formato de fecha inválido. Use YYYY-MM-DD");
+        }
+
+        // Buscar venue
+        VenueEntity venue = venueRepository.findById(eventDTO.getVenueId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "El venue no existe"));
+
+        EventEntity updated = new EventEntity(id, eventDTO.getName(), date, venue);
+
+        return eventRepository.update(id, updated)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
     }
 
     @Override
     public void delete(Long id) {
-        Event existing = eventRepository.findById(id);
-        if (existing == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado");
-        }
+        eventRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Evento no encontrado"));
         eventRepository.delete(id);
     }
 }

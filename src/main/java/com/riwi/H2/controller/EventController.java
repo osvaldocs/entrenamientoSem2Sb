@@ -1,7 +1,7 @@
 package com.riwi.H2.controller;
 
 import com.riwi.H2.dto.EventDTO;
-import com.riwi.H2.model.entity.Event;
+import com.riwi.H2.model.entity.EventEntity;
 import com.riwi.H2.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,11 +35,11 @@ public class EventController {
     @ApiResponse(
             responseCode = "200",
             description = "Lista obtenida correctamente",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Event.class))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventEntity.class))
     )
     @GetMapping
-    public ResponseEntity<List<Event>> getAllEvents() {
-        List<Event> events = eventService.getAll();
+    public ResponseEntity<List<EventEntity>> getAllEvents() {
+        List<EventEntity> events = eventService.getAll();
         return ResponseEntity.ok(events);
     }
 
@@ -52,12 +52,12 @@ public class EventController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Evento encontrado",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Event.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventEntity.class))),
             @ApiResponse(responseCode = "404", description = "Evento no encontrado")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
-        Event event = eventService.getById(id);
+    public ResponseEntity<EventEntity> getEventById(@PathVariable Long id) {
+        EventEntity event = eventService.getById(id);
         if (event == null) {
             return ResponseEntity.notFound().build();
         }
@@ -73,12 +73,12 @@ public class EventController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Evento creado correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Event.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventEntity.class))),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
     @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody EventDTO eventDTO) {
-        Event createdEvent = eventService.create(eventDTO);
+    public ResponseEntity<EventEntity> createEvent(@RequestBody EventDTO eventDTO) {
+        EventEntity createdEvent = eventService.create(eventDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEvent);
     }
 
@@ -91,12 +91,12 @@ public class EventController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Evento actualizado correctamente",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Event.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventEntity.class))),
             @ApiResponse(responseCode = "404", description = "Evento no encontrado")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
-        Event updatedEvent = eventService.update(id, eventDTO);
+    public ResponseEntity<EventEntity> updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
+        EventEntity updatedEvent = eventService.update(id, eventDTO);
         if (updatedEvent == null) {
             return ResponseEntity.notFound().build();
         }
@@ -116,7 +116,7 @@ public class EventController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
-        Event existing = eventService.getById(id);
+        EventEntity existing = eventService.getById(id);
         if (existing == null) {
             return ResponseEntity.notFound().build();
         }
