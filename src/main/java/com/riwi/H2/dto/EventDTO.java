@@ -1,5 +1,7 @@
 package com.riwi.H2.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventDTO {
+
+    @NotBlank(message = "El nombre es obligatorio")
     private String name;
-    private String date;      // String -> LocalDate dentro del Service
-    private Long venueId;     // String -> Long para buscar el venue
+
+    @NotBlank(message = "La fecha es obligatoria")
+    private String date;   // Se validará formato en el Service
+
+    @NotNull(message = "El ID del venue es obligatorio")
+    private Long venueId;
 }

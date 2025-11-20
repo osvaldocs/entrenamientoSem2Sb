@@ -5,9 +5,9 @@ import com.riwi.H2.model.entity.VenueEntity;
 import java.util.List;
 
 public interface VenueService {
-    List<VenueEntity> getAll();
-    VenueEntity getById(Long id);
-    VenueEntity create(VenueDTO venueDTO);
-    VenueEntity update(Long id, VenueDTO venueDTO);
+    List<VenueDTO> getAll();
+    VenueDTO getById(Long id);
+    VenueDTO create(VenueDTO venueDTO);
+    VenueDTO update(Long id, VenueDTO venueDTO);
     void delete(Long id);
 }
