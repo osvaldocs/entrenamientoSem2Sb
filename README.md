@@ -1,144 +1,158 @@
-🎟️ H1 – Catálogo In-Memory de Eventos y Venues
+# Proyecto H2 Spring Boot - Catálogo Persistente de Eventos
 
-Proyecto desarrollado en Spring Boot para gestionar un catálogo de Eventos y Venues mediante una API REST con arquitectura por capas, almacenamiento en memoria y documentación con Swagger/OpenAPI.
+## Descripción
 
-------------------------------------------------------------
-🚀 Descripción General
+Este proyecto es una **API RESTful** de un catálogo de eventos con persistencia en **H2 Database**. Permite gestionar **Eventos** y sus **Venues**, incluyendo operaciones CRUD, validaciones, paginación y documentación con **Swagger/OpenAPI**.
 
-Esta API forma parte del proyecto de una tiquetera online.
-Permite administrar eventos y venues, realizando operaciones CRUD completas sin persistencia en base de datos (almacenamiento en memoria).
+Está desarrollado como parte de un proyecto de aprendizaje y práctica de **Spring Boot, JPA, H2, MapStruct y Validaciones**.
 
-Estructura basada en arquitectura por capas:
-- controller → Exposición REST (manejo de endpoints y respuestas HTTP)
-- service → Lógica de negocio
-- repository → Simulación de acceso a datos (almacenamiento en memoria)
-- dto → Transferencia de datos (entrada/salida de información)
-- model → Representación de las entidades del dominio
+---
 
-------------------------------------------------------------
-🧩 Tecnologías Utilizadas
+## Stack Tecnológico
 
-- Java 17
-- Spring Boot 3.x
-- Spring Web
-- Springdoc OpenAPI (Swagger UI)
-- Maven
-- Lombok (opcional)
+* **Java 17**
+* **Spring Boot 3.5.7**
+* **Spring Data JPA**
+* **H2 Database** (in-memory)
+* **MapStruct** (mapeo DTO ↔ Entity)
+* **Jakarta Validation** (`@Valid`, `@NotBlank`, etc.)
+* **Swagger / OpenAPI** (`springdoc-openapi`)
+* **Lombok**
+* **Maven** como gestor de dependencias
 
-------------------------------------------------------------
-📂 Estructura del Proyecto
+---
 
-src/
- └── main/
-     └── java/com/riwi/H1/
-         ├── controller/
-         │   ├── EventController.java
-         │   └── VenueController.java
-         ├── dto/
-         │   ├── EventDTO.java
-         │   └── VenueDTO.java
-         ├── model/
-         │   ├── Event.java
-         │   └── Venue.java
-         ├── repository/
-         │   ├── EventRepository.java
-         │   └── VenueRepository.java
-         ├── service/
-         │   ├── EventService.java
-         │   ├── VenueService.java
-         │   └── impl/
-         │       ├── EventServiceImpl.java
-         │       └── VenueServiceImpl.java
-         ├── config/
-         │   └── OpenApiConfig.java
-         └── H1Application.java
+## Estructura del Proyecto
 
-------------------------------------------------------------
-⚙️ Instalación y Ejecución
+```
+com.riwi.H2
+├── controller       # Endpoints REST (EventController)
+├── dto              # Data Transfer Objects (EventDTO, VenueDTO)
+├── exception        # Manejo de errores (BadRequestException, ResourceNotFoundException)
+├── mapper           # MapStruct mappers (EventVenueMapper)
+├── model
+│   └── entity       # Entidades JPA (EventEntity, VenueEntity)
+├── repository
+│   └── interfaces   # Repositorios JPA (EventRepository, VenueRepository)
+└── service
+    ├── EventService
+    └── impl         # Implementación de servicios (EventServiceImpl)
+```
 
-1. Clonar el repositorio:
-   git clone https://github.com/tu-usuario/H1-catalogo.git
+---
 
-2. Entrar al directorio del proyecto:
-   cd H1-catalogo
+## Endpoints
 
-3. Compilar y ejecutar:
-   mvn spring-boot:run
+Todos los endpoints se exponen bajo `/events`.
 
-4. Acceder a Swagger UI:
-   http://localhost:8080/swagger-ui.html
+| Método | Ruta           | Descripción                    | Código Respuesta     |
+| ------ | -------------- | ------------------------------ | -------------------- |
+| GET    | `/events`      | Obtener todos los eventos      | 200 OK               |
+| GET    | `/events/{id}` | Obtener un evento por ID       | 200 OK / 404         |
+| POST   | `/events`      | Crear un nuevo evento          | 201 Created / 400    |
+| PUT    | `/events/{id}` | Actualizar un evento existente | 200 OK / 400 / 404   |
+| DELETE | `/events/{id}` | Eliminar un evento             | 204 No Content / 404 |
 
-------------------------------------------------------------
-📘 Endpoints Principales
+> Los endpoints incluyen validaciones y manejo de errores mediante excepciones personalizadas.
 
-🎫 Eventos (/events)
-- GET /events → Obtener todos los eventos (200 OK)
-- GET /events/{id} → Obtener un evento por ID (200 / 404)
-- POST /events → Crear un nuevo evento (201 Created)
-- PUT /events/{id} → Actualizar un evento existente (200 / 404)
-- DELETE /events/{id} → Eliminar un evento (204 / 404)
+---
 
-🏟️ Venues (/venues)
-- GET /venues → Obtener todos los venues (200 OK)
-- GET /venues/{id} → Obtener un venue por ID (200 / 404)
-- POST /venues → Crear un nuevo venue (201 Created)
-- PUT /venues/{id} → Actualizar un venue existente (200 / 404)
-- DELETE /venues/{id} → Eliminar un venue (204 / 404)
+## Swagger / OpenAPI
 
-------------------------------------------------------------
-🧠 Ejemplo de Entidad: Venue
+La documentación interactiva se encuentra en:
 
+```
+http://localhost:8080/swagger-ui.html
+```
+
+O bien, usando **SpringDoc OpenAPI**:
+
+```
+http://localhost:8080/v3/api-docs
+```
+
+Allí podrás ver los endpoints, códigos de respuesta, ejemplos y modelos DTO.
+
+---
+
+## Ejemplos de uso (JSON)
+
+**Crear evento**
+
+```json
+POST /events
 {
-  "id": 1,
-  "name": "Teatro Municipal",
-  "location": "Medellín",
-  "capacity": 250
-}
-
-🧾 Ejemplo de Entidad: Event
-
-{
-  "id": 1,
-  "name": "Festival de Rock",
-  "date": "2025-11-20",
+  "name": "Concierto Rock",
+  "date": "2025-12-10",
   "venueId": 1
 }
+```
 
-------------------------------------------------------------
-📄 Documentación Swagger
+**Respuesta**
 
-La documentación interactiva se genera automáticamente con Springdoc OpenAPI.
-Incluye descripciones, ejemplos y códigos de respuesta para cada endpoint.
+```json
+{
+  "id": 1,
+  "name": "Concierto Rock",
+  "date": "2025-12-10",
+  "venueId": 1
+}
+```
 
-URL de acceso:
+---
+
+## Instalación y Ejecución
+
+1. Clonar el repositorio:
+
+```bash
+git clone <url_del_repositorio>
+cd H2
+```
+
+2. Construir el proyecto con Maven:
+
+```bash
+mvn clean install
+```
+
+3. Ejecutar la aplicación:
+
+```bash
+mvn spring-boot:run
+```
+
+4. Acceder a la API en:
+
+```
+http://localhost:8080/events
+```
+
+5. Acceder a Swagger UI:
+
+```
 http://localhost:8080/swagger-ui.html
+```
 
-------------------------------------------------------------
-🧱 Arquitectura por Capas
+---
 
-Controller → Service → Repository → Memory Data
-       ↑
-       └── DTOs para entrada/salida de datos
+## Consideraciones
 
-- Controller: recibe y responde peticiones HTTP.
-- Service: aplica reglas de negocio y validaciones.
-- Repository: simula persistencia en memoria.
-- DTO: separa las entidades internas de las peticiones externas.
+* La base de datos H2 es **in-memory**, por lo que los datos se pierden al detener la aplicación.
+* Validaciones activas con **Jakarta Validation** (`@NotBlank`, `@Future`, etc.)
+* MapStruct se utiliza para mapear entre **Entity ↔ DTO** de manera eficiente.
+* Manejo global de errores mediante excepciones personalizadas.
+* Preparado para integración futura con Spring Data JPA persistente.
 
-------------------------------------------------------------
-🧰 Validaciones Básicas
+---
 
-- Venue → capacidad debe ser > 0, nombre y ubicación obligatorios.
-- Event → fecha y nombre obligatorios, venueId debe existir.
+## Autores
 
-------------------------------------------------------------
-👨‍💻 Autor
+* **Pablo Campos** - Desarrollo Backend / Servicios REST
+* Proyecto educativo para **Riwi Bootcamp**.
 
-Pablo Campos
-Proyecto académico – Riwi
-Módulo: Spring Boot – Arquitectura por Capas (H1)
+---
 
-------------------------------------------------------------
-🧾 Licencia
+## Licencia
 
-Este proyecto se distribuye con fines educativos bajo la licencia MIT.
+Proyecto de aprendizaje, sin licencia específica.
